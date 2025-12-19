@@ -1,0 +1,16 @@
+﻿
+namespace TaskManagement.Common.Entities
+{
+     public class TaskItem
+    {
+       
+        public int Id { get; set; }
+        public string TaskTitle { get; set; }
+        public string TaskDescription { get; set; }
+        public string TaskStatus { get; set; }
+        public int ProjectId { get; set; }
+        public Project ProjectItem { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+    }
+}
