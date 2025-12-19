@@ -8,6 +8,6 @@ namespace TaskManagement.Common.Entities
     {
         public int ProjectId { get; set; }
         public string ProjectDescription { get; set; }
-        public List<TaskItem> ProjectTask { get; set; }
+       
     }
 }

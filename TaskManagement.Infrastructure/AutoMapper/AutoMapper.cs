@@ -11,9 +11,7 @@ namespace TaskManagement.Infrastructure.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<TaskItem, TaskDto>().ForMember(dis => dis.TaskTitle, src => src.MapFrom(opt => opt.TaskTitle))
-                .ForMember(dis => dis.TaskDescription, src => src.MapFrom(opt => opt.TaskDescription))
-                .ForMember(dis => dis.TaskStatus, src => src.MapFrom(opt => opt.TaskStatus));
+            CreateMap<TaskDto, TaskItem>().ReverseMap();
         }
     }
 }

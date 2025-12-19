@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManagement.Common.Entities;
 using TaskManagement.Data;
 using TaskManagement.Infrastructure.Interface;
 

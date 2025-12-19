@@ -75,17 +75,12 @@ namespace TaskManagement.Data.Migrations
             modelBuilder.Entity("TaskManagement.Common.Entities.TaskItem", b =>
                 {
                     b.HasOne("TaskManagement.Common.Entities.Project", "ProjectItem")
-                        .WithMany("ProjectTask")
+                        .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ProjectItem");
-                });
-
-            modelBuilder.Entity("TaskManagement.Common.Entities.Project", b =>
-                {
-                    b.Navigation("ProjectTask");
                 });
 #pragma warning restore 612, 618
         }

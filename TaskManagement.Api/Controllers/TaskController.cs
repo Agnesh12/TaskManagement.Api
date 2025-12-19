@@ -38,19 +38,21 @@ namespace TaskManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskItem>> AddTask(TaskItem NewTask)
+        public async Task<ActionResult<TaskItem>> AddTask(TaskDto NewTask)
         {
-       
-            if (NewTask == null)
+            var production = mapper.Map<TaskItem>(NewTask);
+            var createdTask = taskService.Insert(production);
+           /* if (NewTask == null)
                 return BadRequest();
 
             var createdTask =  taskService.Insert(NewTask);
-
+           */
             return CreatedAtAction(
                 nameof(GetTask),
                 new { id = createdTask.Id },
                 createdTask
             );
+           
         }
 
         [HttpPut("{id}")]
