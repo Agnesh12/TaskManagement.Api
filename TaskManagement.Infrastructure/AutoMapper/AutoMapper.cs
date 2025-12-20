@@ -11,7 +11,10 @@ namespace TaskManagement.Infrastructure.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<TaskDto, TaskItem>().ReverseMap();
+            CreateMap<TaskDto, TaskItem>();
+            CreateMap<TaskItem, TaskResponseDto>();
+            CreateMap<ProjectRequestDto, Project>();
+            CreateMap<Project, ProjectResponseDto>();
         }
     }
 }

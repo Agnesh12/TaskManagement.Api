@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManagement.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class TableAdded : Migration
+    public partial class Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace TaskManagement.Data.Migrations
                 {
                     ProjectId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProjectDescription = table.Column<string>(type: "text", nullable: false)
+                    ProjectDescription = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,23 +35,23 @@ namespace TaskManagement.Data.Migrations
                     TaskDescription = table.Column<string>(type: "text", nullable: false),
                     TaskStatus = table.Column<string>(type: "text", nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
+                    ForeignId = table.Column<int>(name: "Foreign Id", type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tasks_projects_ProjectId",
-                        column: x => x.ProjectId,
+                        name: "FK_tasks_projects_Foreign Id",
+                        column: x => x.ForeignId,
                         principalTable: "projects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProjectId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_tasks_ProjectId",
+                name: "IX_tasks_Foreign Id",
                 table: "tasks",
-                column: "ProjectId");
+                column: "Foreign Id");
         }
 
         /// <inheritdoc />

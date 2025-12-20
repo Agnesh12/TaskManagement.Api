@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TaskManagement.Application.Interface;
 using TaskManagement.Application.Services;
-using TaskManagement.Common.Entities;
 using TaskManagement.Data;
-using TaskManagement.Infrastructure.AutoMapper;
 using TaskManagement.Infrastructure.Interface;
 using TaskManagement.Infrastructure.Repository;
 
@@ -17,8 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITaskService, TaskService>();
-builder.Services.AddScoped<IGenericRepository<TaskItem>, GenericRepository<TaskItem>>();
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Database
 builder.Services.AddDbContext<TaskManagementContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));

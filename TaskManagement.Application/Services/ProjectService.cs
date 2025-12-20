@@ -22,9 +22,13 @@ namespace TaskManagement.Application.Services
         {
             return genericRepository.Update(UpdateProject);
         }
-        public Task<Project> Delete(int ProjectId)
+        public Task<Project?> Delete(int ProjectId)
         {
             return genericRepository.Delete(ProjectId);
+        }
+        public async Task<IEnumerable<Project>> GetAll()
+        {
+            return await genericRepository.GetAll();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TaskManagement.Infrastructure.Repository
         {
             return await dbset.ToListAsync();
         }
-        public async Task<T> GetById(int id)
+        public async Task<T?> GetById(int id)
         {
            return await dbset.FindAsync(id);
         }
@@ -34,9 +34,13 @@ namespace TaskManagement.Infrastructure.Repository
             await _Context.SaveChangesAsync();
             return obj;
         }
-        public async Task<T> Delete(int id)
+        public async Task<T?> Delete(int id)
         {
-            T existing = await dbset.FindAsync(id);
+            T? existing = await dbset.FindAsync(id);
+            if(existing == null)
+            {
+                return existing;
+            }
             dbset.Remove(existing);
             await _Context.SaveChangesAsync();
             return existing;

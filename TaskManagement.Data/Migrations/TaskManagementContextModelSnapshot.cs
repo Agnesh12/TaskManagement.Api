@@ -31,7 +31,6 @@ namespace TaskManagement.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProjectId"));
 
                     b.Property<string>("ProjectDescription")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ProjectId");
@@ -50,6 +49,9 @@ namespace TaskManagement.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int?>("Foreign Id")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
@@ -67,7 +69,7 @@ namespace TaskManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("Foreign Id");
 
                     b.ToTable("tasks");
                 });
@@ -76,9 +78,7 @@ namespace TaskManagement.Data.Migrations
                 {
                     b.HasOne("TaskManagement.Common.Entities.Project", "ProjectItem")
                         .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Foreign Id");
 
                     b.Navigation("ProjectItem");
                 });

@@ -23,59 +23,53 @@ namespace TaskManagement.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskItem>> GetTask(int id)
         {
-            var task =  taskService.GetById(id);
+            var task =  await taskService.GetById(id);
             if (task == null)
                 return NotFound();
-            var wantedData = mapper.Map<TaskDto>(task);
+            var wantedData = mapper.Map<TaskResponseDto>(task);
             return Ok(wantedData);
         }
 
         [HttpGet]
         public async Task<ActionResult<List<TaskItem>>> GetAllTask()
         {
-            var tasks = taskService.GetAll();
-            return Ok(tasks);
+            var tasks = await taskService.GetAll();
+            var listTasks = mapper.Map<IEnumerable<TaskResponseDto>>(tasks);
+            return Ok(listTasks);
         }
 
         [HttpPost]
         public async Task<ActionResult<TaskItem>> AddTask(TaskDto NewTask)
         {
-            var production = mapper.Map<TaskItem>(NewTask);
-            var createdTask = taskService.Insert(production);
-           /* if (NewTask == null)
-                return BadRequest();
-
-            var createdTask =  taskService.Insert(NewTask);
-           */
-            return CreatedAtAction(
-                nameof(GetTask),
-                new { id = createdTask.Id },
-                createdTask
-            );
+            var task = mapper.Map<TaskItem>(NewTask);
+            var createdTask = await taskService.Insert(task);
+            var finishTask = mapper.Map<TaskResponseDto>(createdTask);
+            return Ok(finishTask);
            
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskItem newTask)
+        public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskDto newTask)
         {
-            if (newTask == null)
-                return BadRequest();
-            var existingTask =  taskService.GetById(id);
-            if (existingTask == null)
+            var NewTask = mapper.Map<TaskItem>(newTask);
+            NewTask.Id = id;
+            var updated = await taskService.Update(NewTask);
+            
+            if (updated == null)
                 return NotFound();
 
-            await taskService.Update(newTask);
+            var responseDto = mapper.Map<TaskResponseDto>(updated);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTask(int id)
         {
-            var task =  taskService.GetById(id);
+            var task = await taskService.GetById(id);
             if (task == null)
                 return NotFound();
 
-            taskService.Delete(id);
+            await taskService.Delete(id);
             return NoContent();
         }
     }

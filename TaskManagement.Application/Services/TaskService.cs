@@ -7,14 +7,14 @@ namespace TaskManagement.Application.Services
 {
     public class TaskService : ITaskService
     {
-        
         private readonly IGenericRepository<TaskItem> genericRepository;
         public TaskService(IGenericRepository<TaskItem> taskRepository)
         {
             this.genericRepository = taskRepository;
         }
-        public  Task<TaskItem> GetById(int TaskId)    {
-            var task = genericRepository.GetById(TaskId);
+        public async Task<TaskItem?> GetById(int TaskId)
+        {
+            var task = await genericRepository.GetById(TaskId);
             if(task == null)
             {
                 return null;
@@ -25,19 +25,18 @@ namespace TaskManagement.Application.Services
         {
             return await genericRepository.GetAll();
         }
-        public async Task<TaskItem> Insert(TaskItem NewTask)
+        public async Task<TaskItem> Insert(TaskItem newTask)
         {
-            return await genericRepository.Insert(NewTask);
+            return await genericRepository.Insert(newTask);
         }
         public Task<TaskItem> Update(TaskItem updateTask)
         {
             
             return genericRepository.Update(updateTask);
         }
-        public async Task<TaskItem> Delete(int id)
+        public async Task<TaskItem?> Delete(int id)
         {
             return await genericRepository.Delete(id);
         }
      }
-
 }
