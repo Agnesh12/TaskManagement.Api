@@ -8,6 +8,7 @@ namespace TaskManagement.Common.Entities
     {
         public int ProjectId { get; set; }
         public string? ProjectDescription { get; set; }
-       // public ICollection<TaskItem> TaskItems { get; set; } = new List<TaskItem>();
+        public List<TaskItem> Tasks { get; set; }
+
     }
 }

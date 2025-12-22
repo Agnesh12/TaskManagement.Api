@@ -13,7 +13,7 @@ namespace TaskManagement.Common.Entities
         
         public int ProjectId { get; set; }
         [ForeignKey("Foreign Id")]
-        public Project ProjectItem { get; set; }
+        public Project Project { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
     }

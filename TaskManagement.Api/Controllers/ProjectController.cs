@@ -23,8 +23,8 @@ namespace TaskManagement.Api.Controllers
         [HttpPost("Addproject")]
         public async Task<ActionResult<Project>> AddProject([FromBody] ProjectRequestDto requestDto)
         {
-            var currentProject = mapper.Map<Project>(requestDto);
-            var addedProject = await projectService.Insert(currentProject);
+            var addData = mapper.Map<Project>(requestDto);
+            var addedProject = await projectService.Insert(addData);
             var responseDto = mapper.Map<ProjectResponseDto>(addedProject);
             return Ok(responseDto);
         }
@@ -48,21 +48,38 @@ namespace TaskManagement.Api.Controllers
             return Ok(responseDto);
 
         }
-        [HttpGet]
-        public async Task<ActionResult<List<Project>>> GetAll()
+        [HttpGet("GetAllProjectTask")]
+        public async Task<ActionResult<List<TaskResponseDto>>> GetAll()
         {
-            var projects = await projectService.GetAll();
-            var listProject = mapper.Map<List<ProjectResponseDto>>(projects);
-            return Ok(listProject);
+            //var allProjects = await projectService.GetAll();
+            //if (allProjects == null)
+            //{
+            //    return NotFound();
+            //}
+            //var allTasks = await taskService.GetAll();
+           
+            //var projectsDto = mapper.Map<List<ProjectDto>>(allProjects);
+            
+            //foreach(var projectDtos in projectsDto)
+            //{
+            //    var projectTasks = allTasks.Where(t => t.ProjectId == projectDtos.ProjectId).ToList();
+            //    projectDtos.Tasks = mapper.Map<List<TaskResponseDto>>(projectTasks);
+            //}
+            //var projectsTasks = mapper.Map<List<TaskResponseDto>>(projectsDto);
+            
+            return Ok();
             
         }
-        [HttpGet("{projectId}")]
-        public async Task<ActionResult<List<Task>>> GetProjectTask(int projectId)
+        [HttpGet("GetProjectTask{projectId}")]
+        public async Task<ActionResult<List<ProjectResponseDto>>> GetProjectTask(int projectId)
         {
-            var allTasks = await taskService.GetAll();
-            var projectTasks =  allTasks.Where(taskId => taskId.ProjectId == projectId).ToList();
-            var responseProjectTask = mapper.Map<List<TaskResponseDto>>(projectTasks);
-            return Ok(responseProjectTask);
+            var ListTasks = await projectService.GetById(projectId);
+            if(ListTasks == null)
+            {
+                return NotFound();
+            }
+            var TasksDto = mapper.Map<List<TaskResponseDto>>(ListTasks);
+            return Ok(TasksDto);
         }
     }
 }

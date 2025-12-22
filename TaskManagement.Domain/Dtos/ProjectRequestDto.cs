@@ -7,5 +7,6 @@ namespace TaskManagement.Common.Dtos
     public class ProjectRequestDto
     {
         public string? ProjectDescription { get; set; }
+        public List<TaskDto> taskRequestDtos { get; set; }
     }
 }

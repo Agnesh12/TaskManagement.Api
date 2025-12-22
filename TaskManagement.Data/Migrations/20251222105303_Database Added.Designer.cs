@@ -12,8 +12,8 @@ using TaskManagement.Data;
 namespace TaskManagement.Data.Migrations
 {
     [DbContext(typeof(TaskManagementContext))]
-    [Migration("20251220140316_Database")]
-    partial class Database
+    [Migration("20251222105303_Database Added")]
+    partial class DatabaseAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace TaskManagement.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("Foreign Id")
+                    b.Property<int>("Foreign Id")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProjectId")
@@ -80,10 +80,17 @@ namespace TaskManagement.Data.Migrations
             modelBuilder.Entity("TaskManagement.Common.Entities.TaskItem", b =>
                 {
                     b.HasOne("TaskManagement.Common.Entities.Project", "ProjectItem")
-                        .WithMany()
-                        .HasForeignKey("Foreign Id");
+                        .WithMany("Tasks")
+                        .HasForeignKey("Foreign Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ProjectItem");
+                });
+
+            modelBuilder.Entity("TaskManagement.Common.Entities.Project", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

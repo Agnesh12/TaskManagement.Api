@@ -11,5 +11,6 @@ namespace TaskManagement.Application.Interface
         public Task<Project> Update(Project UpdateProject);
         public Task<Project?> Delete(int ProjectId);
         public Task<IEnumerable<Project>> GetAll();
+        public Task<Project?> GetById(int projectId);
     }
 }

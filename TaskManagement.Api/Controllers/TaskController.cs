@@ -20,7 +20,7 @@ namespace TaskManagement.Api.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("TaskId{id}")]
         public async Task<ActionResult<TaskItem>> GetTask(int id)
         {
             var task =  await taskService.GetById(id);
@@ -30,7 +30,7 @@ namespace TaskManagement.Api.Controllers
             return Ok(wantedData);
         }
 
-        [HttpGet]
+        [HttpGet("GetAllTask")]
         public async Task<ActionResult<List<TaskItem>>> GetAllTask()
         {
             var tasks = await taskService.GetAll();
@@ -38,7 +38,7 @@ namespace TaskManagement.Api.Controllers
             return Ok(listTasks);
         }
 
-        [HttpPost]
+        [HttpPost("AddTask")]
         public async Task<ActionResult<TaskItem>> AddTask(TaskDto NewTask)
         {
             var task = mapper.Map<TaskItem>(NewTask);
@@ -48,7 +48,7 @@ namespace TaskManagement.Api.Controllers
            
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("UpdateTask{id}")]
         public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskDto newTask)
         {
             var NewTask = mapper.Map<TaskItem>(newTask);
@@ -59,10 +59,10 @@ namespace TaskManagement.Api.Controllers
                 return NotFound();
 
             var responseDto = mapper.Map<TaskResponseDto>(updated);
-            return NoContent();
+            return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteTask{id}")]
         public async Task<ActionResult> DeleteTask(int id)
         {
             var task = await taskService.GetById(id);

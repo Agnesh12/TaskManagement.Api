@@ -4,12 +4,14 @@ using System.Text;
 using TaskManagement.Application.Interface;
 using TaskManagement.Common.Entities;
 using TaskManagement.Infrastructure.Interface;
+using TaskManagement.Infrastructure.Repository;
 
 namespace TaskManagement.Application.Services
 {
     public class ProjectService : IProjectService
     {
         private readonly IGenericRepository<Project> genericRepository;
+        private readonly IProjectRepository projectRepository;  
         public ProjectService(IGenericRepository<Project> projectRepository)
         {
             this.genericRepository = projectRepository;
@@ -29,6 +31,10 @@ namespace TaskManagement.Application.Services
         public async Task<IEnumerable<Project>> GetAll()
         {
             return await genericRepository.GetAll();
+        }
+        public async Task<Project?> GetById(int projectId)
+        {
+            //var ListTask = await ProjectRepository.GetById(projectId);
         }
     }
 }

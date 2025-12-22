@@ -14,7 +14,8 @@ namespace TaskManagement.Infrastructure.AutoMapper
             CreateMap<TaskDto, TaskItem>();
             CreateMap<TaskItem, TaskResponseDto>();
             CreateMap<ProjectRequestDto, Project>();
-            CreateMap<Project, ProjectResponseDto>();
+            CreateMap<Project, ProjectResponseDto>();          
+            
         }
     }
 }

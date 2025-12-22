@@ -9,14 +9,13 @@ namespace TaskManagement.Data
         {
             
         }
-      /*  protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Project>()
-                .HasOne(P => P.Project)
-                .HasMany(tasks => tasks.TaskItems)
-                .HasForiegnKey(fk => fk.ProjectId);
+            modelBuilder.Entity<TaskItem>()
+                .HasOne(b => b.Project)
+                .WithMany(p => p.Tasks)
+                .HasForeignKey(b => b.ProjectId);
         }
-      */
        public DbSet<TaskItem> tasks { get; set; }
        public DbSet<Project> projects { get; set; }
     }

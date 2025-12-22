@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManagement.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Database : Migration
+    public partial class DatabaseAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace TaskManagement.Data.Migrations
                     TaskDescription = table.Column<string>(type: "text", nullable: false),
                     TaskStatus = table.Column<string>(type: "text", nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
-                    ForeignId = table.Column<int>(name: "Foreign Id", type: "integer", nullable: true),
+                    ForeignId = table.Column<int>(name: "Foreign Id", type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -45,7 +45,8 @@ namespace TaskManagement.Data.Migrations
                         name: "FK_tasks_projects_Foreign Id",
                         column: x => x.ForeignId,
                         principalTable: "projects",
-                        principalColumn: "ProjectId");
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
