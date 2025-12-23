@@ -21,9 +21,9 @@ namespace TaskManagement.Infrastructure.Repository
         {
            return await dbset.FindAsync(id);
         }
-        public async Task<T> Insert(T obj)
+        public async Task<T?> Insert(T obj)
         {
-            await dbset.AddAsync(obj);
+            dbset.Add(obj);
             await _Context.SaveChangesAsync();
             return obj;
         }

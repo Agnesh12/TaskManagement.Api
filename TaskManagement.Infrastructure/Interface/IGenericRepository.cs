@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskManagement.Common.Dtos;
 using TaskManagement.Common.Entities;
 
 namespace TaskManagement.Infrastructure.Interface
@@ -12,6 +13,7 @@ namespace TaskManagement.Infrastructure.Interface
         Task<T> Insert(T obj);
         Task<T> Update(T obj);
         Task<T?> Delete(int id);
+        
     }
 
 }    

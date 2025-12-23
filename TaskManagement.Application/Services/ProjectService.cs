@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using AutoMapper;
 using TaskManagement.Application.Interface;
+using TaskManagement.Common.Dtos;
 using TaskManagement.Common.Entities;
 using TaskManagement.Infrastructure.Interface;
 using TaskManagement.Infrastructure.Repository;
@@ -12,15 +12,16 @@ namespace TaskManagement.Application.Services
     {
         private readonly IGenericRepository<Project> genericRepository;
         private readonly IProjectRepository projectRepository;  
-        public ProjectService(IGenericRepository<Project> projectRepository)
+        public ProjectService(IGenericRepository<Project> projectRepository, IProjectRepository Repository)
         {
             this.genericRepository = projectRepository;
+            this.projectRepository = Repository;
         }
-        public Task<Project> Insert(Project NewProject)
+        public async Task<Project> Insert(Project NewProject)
         {
-            return genericRepository.Insert(NewProject);
+            return await genericRepository.Insert(NewProject);
         }
-        public Task<Project> Update(Project UpdateProject)
+        public Task<Project> Update(Project  UpdateProject)
         {
             return genericRepository.Update(UpdateProject);
         }
@@ -28,13 +29,15 @@ namespace TaskManagement.Application.Services
         {
             return genericRepository.Delete(ProjectId);
         }
-        public async Task<IEnumerable<Project>> GetAll()
+        public async Task<List<Project?>> GetAll()
         {
-            return await genericRepository.GetAll();
+            var projects = await projectRepository.GetAll();
+            return projects.ToList();
         }
-        public async Task<Project?> GetById(int projectId)
+        public  Task<Project?> GetById(int projectId)
         {
             //var ListTask = await ProjectRepository.GetById(projectId);
+            return projectRepository.GetById(projectId);
         }
     }
 }

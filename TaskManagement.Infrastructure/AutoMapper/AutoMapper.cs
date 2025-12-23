@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TaskManagement.Common.Dtos;
 using TaskManagement.Common.Entities;
 
@@ -13,9 +10,10 @@ namespace TaskManagement.Infrastructure.AutoMapper
         {
             CreateMap<TaskDto, TaskItem>();
             CreateMap<TaskItem, TaskResponseDto>();
-            CreateMap<ProjectRequestDto, Project>();
-            CreateMap<Project, ProjectResponseDto>();          
-            
+            CreateMap<ProjectResponseDto, Project>()
+            .ForMember(dest => dest.Tasks, opt => opt.MapFrom(src => src.Tasks));
+            CreateMap<Project, ProjectResponseDto>();
+            CreateMap<Project, ProjectRequestDto>();
         }
     }
 }

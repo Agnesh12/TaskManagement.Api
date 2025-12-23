@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using TaskManagement.Common.Dtos;
 using TaskManagement.Common.Entities;
 using TaskManagement.Data;
 using TaskManagement.Infrastructure.Interface;
@@ -16,10 +13,17 @@ namespace TaskManagement.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<Project> GetById(int projectId)
+        public async Task<Project?> GetById(int projectId)
+        {
+            return  _context.projects
+                .Include(p => p.Tasks)
+                .FirstOrDefault(t => t.ProjectId == projectId);
+        }
+        public async Task<IEnumerable<Project?>> GetAll()
         {
             return await _context.projects
-                .Include(p => p.Tasks);
+                .Include(p => p.Tasks).ToListAsync();
         }
+       
     }
 }

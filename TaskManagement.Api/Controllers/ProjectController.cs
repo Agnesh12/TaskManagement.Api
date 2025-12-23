@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Application.Interface;
-using TaskManagement.Application.Services;
 using TaskManagement.Common.Dtos;
 using TaskManagement.Common.Entities;
 
@@ -21,10 +20,12 @@ namespace TaskManagement.Api.Controllers
             this.taskService = taskService;
         }
         [HttpPost("Addproject")]
-        public async Task<ActionResult<Project>> AddProject([FromBody] ProjectRequestDto requestDto)
+        public async Task<ActionResult<Project>> AddProject([FromBody] ProjectResponseDto requestDto)
         {
-            var addData = mapper.Map<Project>(requestDto);
-            var addedProject = await projectService.Insert(addData);
+            var projectData = mapper.Map<Project>(requestDto);
+
+            var addedProject = await projectService.Insert(projectData);
+
             var responseDto = mapper.Map<ProjectResponseDto>(addedProject);
             return Ok(responseDto);
         }
@@ -35,51 +36,45 @@ namespace TaskManagement.Api.Controllers
             return NoContent();
         }
         [HttpPut("Update{updateId}")]
-        public async Task<IActionResult?> Update(int updateId, [FromBody] ProjectRequestDto requestDto)
+        public async Task<IActionResult> Update(int updateId, [FromBody] ProjectRequestDto requestDto)
         {
-            var currentProject = mapper.Map<Project>(requestDto);
+            var currentProject = await projectService.GetById(updateId);
+            currentProject.ProjectDescription = requestDto.ProjectDescription;
+            
+            if(currentProject == null)
+            {
+                return NotFound();
+            }
             currentProject.ProjectId = updateId;
             var updated = await projectService.Update(currentProject);
-            if(updated == null)
+            if (updated == null)
             {
                 return null;
             }
-            var responseDto = mapper.Map<ProjectResponseDto>(updated);
-            return Ok(responseDto);
+            return Ok(requestDto);
 
         }
         [HttpGet("GetAllProjectTask")]
         public async Task<ActionResult<List<TaskResponseDto>>> GetAll()
-        {
-            //var allProjects = await projectService.GetAll();
-            //if (allProjects == null)
-            //{
-            //    return NotFound();
-            //}
-            //var allTasks = await taskService.GetAll();
-           
-            //var projectsDto = mapper.Map<List<ProjectDto>>(allProjects);
+        {         
+            var allProjects = await projectService.GetAll();
+            var TasksDto = mapper.Map<List<ProjectResponseDto>>(allProjects);
             
-            //foreach(var projectDtos in projectsDto)
-            //{
-            //    var projectTasks = allTasks.Where(t => t.ProjectId == projectDtos.ProjectId).ToList();
-            //    projectDtos.Tasks = mapper.Map<List<TaskResponseDto>>(projectTasks);
-            //}
-            //var projectsTasks = mapper.Map<List<TaskResponseDto>>(projectsDto);
-            
-            return Ok();
+
+            return Ok(TasksDto);
             
         }
         [HttpGet("GetProjectTask{projectId}")]
-        public async Task<ActionResult<List<ProjectResponseDto>>> GetProjectTask(int projectId)
+        public async Task<ActionResult<ProjectResponseDto>> GetProjectTask(int projectId)
         {
             var ListTasks = await projectService.GetById(projectId);
             if(ListTasks == null)
             {
                 return NotFound();
             }
-            var TasksDto = mapper.Map<List<TaskResponseDto>>(ListTasks);
-            return Ok(TasksDto);
+            
+            var finalTask = mapper.Map<ProjectResponseDto>(ListTasks);
+            return Ok(finalTask);
         }
     }
 }
